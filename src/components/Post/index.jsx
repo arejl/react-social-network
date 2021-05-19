@@ -1,19 +1,57 @@
+import './index.scss';
 import React from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { HeartOutlined, HeartFilled, DeleteOutlined } from '@ant-design/icons';
 
-const Post = (props) => {
-  const [likes, setLikes] = React.useState(null);
+const Post = ({handleDelete, ...props}) => {
+  const currentUser = useSelector(state => state.id);
+  const userToken = useSelector(state => state.token);
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const [likes, setLikes] = React.useState(Number(props.like));
   const [likeToggle, setLikeToggle] = React.useState(false);
   const toggleLikes = () => {
-    if (!likeToggle) { setLikes(likes + 1) }
-    else { setLikes(likes - 1) };
+    if (!likeToggle) {
+      setLikes(likes + 1);
+      axios.put(`http://localhost:1337/posts/${props.id}`,
+      {
+        like: likes+1,
+      },
+    {
+      headers: {
+        Authorization:
+          `Bearer ${userToken}`,
+      },
+        });
+    }
+    else {
+      setLikes(likes - 1);
+      axios.put(`http://localhost:1337/posts/${props.id}`,
+      {
+        like: likes-1,
+      },
+    {
+      headers: {
+        Authorization:
+          `Bearer ${userToken}`,
+      },
+        });
+    };
     setLikeToggle(!likeToggle);
   };
-  //Le faire avec une request "put" pour modifier l'api
+
+  let url;
+  props.userID == currentUser ? url = "/profile" : url = `/profile/${props.userID}`;
+
   return (
-    <div>
-      <span style={{margin:"10px"}}>by {props.username}: {props.text}</span>
-      <span style={{margin:"10px"}}>{likes || 0} likes</span>
-      <button onClick={() => toggleLikes()} style={{margin:"10px"}}>{likes || 0}</button>
+    <div className="post">
+      {isLoggedIn && <span>by <Link to={`${url}`}><strong>{props.username}</strong></Link>:</span>}
+      <span className="post-text">{props.text}</span>
+      <div className="post-likebar">
+        {isLoggedIn && <><span>{likes} likes</span><button className="button button-like" onClick={() => toggleLikes()}>{(likeToggle && <HeartFilled />) || <HeartOutlined />}</button></>}
+        {(props.userID == currentUser) && <button className="button button-delete" onClick={() => handleDelete(props.id)}><DeleteOutlined /></button>}
+      </div>
     </div>
   )
 };

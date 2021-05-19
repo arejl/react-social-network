@@ -4,7 +4,8 @@ import { LOGIN, LOGOUT } from './userTypes';
 
 const initialState = {
   token: Cookies.get('token') || null,
-  id: null
+  id: Cookies.get('id') || null,
+  isLoggedIn: Cookies.get('isLoggedIn') || false
 };
 
 const userReducer = (state = initialState, action) => {
@@ -13,13 +14,15 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         token: action.userToken,
-        id: action.userID
+        id: action.userID,
+        isLoggedIn: true
       };
     case LOGOUT:
       return {
         ...state,
         token: null,
-        id: null
+        id: null,
+        isLoggedIn: false
       };
     default:
       return state;

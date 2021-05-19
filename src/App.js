@@ -1,10 +1,9 @@
-import './App.css';
+import './App.scss';
 import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Switch,
-  Redirect
+  Switch
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import Navbar from './components/Navbar';
@@ -12,6 +11,7 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import store from './redux/store';
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <main className={`App`}>
+        <main className="App">
         <Navbar />
           <div className="container">
             <Switch>
@@ -32,7 +32,13 @@ function App() {
               <Route path="/login">
                 <Login />
               </Route>
-              <Route path="/profile">
+              <Route path="/profile" exact>
+                <Profile />
+              </Route>
+              <Route path="/profile/edit" exact>
+                <EditProfile />
+              </Route>
+              <Route path="/profile/:userID">
                 <Profile />
               </Route>
             </Switch>

@@ -24,7 +24,7 @@ const Navbar = () => {
       <Link to={`/profile`}>My Profile</Link>
     </Menu.Item>
     <Menu.Item key="logout" icon={<PoweroffOutlined />}>
-        <Link to={`/`} onClick={() => { dispatch(logOut()); Cookies.remove('token') }}>Log Out</Link>
+        <Link to={`/`} onClick={() => { dispatch(logOut()); Cookies.remove('token'); Cookies.remove('id'); Cookies.remove('isLoggedIn') }}>Log Out</Link>
     </Menu.Item>
     </>;
   return (

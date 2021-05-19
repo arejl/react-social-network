@@ -1,6 +1,7 @@
-import { Form, Input } from 'antd';
+import '../Register/index.scss'
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { Form, Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../../redux/user/userActions';
 import { useHistory } from "react-router-dom";
@@ -15,19 +16,20 @@ const Login = () => {
     password: `${collectedValues.password}`,
   })
   .then(response => {
-    console.log('User profile', response.data.user);
     Cookies.set('token', response.data.jwt, { sameSite: 'lax' });
-    dispatch(logIn(Cookies.get('token'), response.data.user.id));
+    Cookies.set('id', response.data.user.id, { sameSite: 'lax' });
+    Cookies.set('isLoggedIn', true, { sameSite: 'lax' });
+    dispatch(logIn(Cookies.get('token'), Cookies.get('id')));
     history.push('/');
   })
-      .catch(error => {
-    console.log('An error occurred:', error.response.data);
+  .catch(error => {
+    alert(error.response.data.message[0].messages[0].message);
   });
   }
   return (
     <>
       <h1>Sign in with your My Social Network account!</h1>
-      <div style={{width:'50%', margin:'auto auto'}}>
+      <div class="form">
       <Form onFinish={(values) => handleSubmit(values)}>
         <Form.Item name="email" label={<span>Your email</span>}>
           <Input />

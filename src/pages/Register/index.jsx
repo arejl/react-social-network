@@ -1,10 +1,13 @@
-import { Form, Input } from 'antd';
+import './index.scss';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { Form, Input } from 'antd';
 import { useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import { logIn } from '../../redux/user/userActions';
 
 const Register = () => {
+  let history = useHistory();
   const dispatch = useDispatch();
   const handleSubmit = (fieldsValue) => {
     const collectedValues = {username: fieldsValue['username'], email: fieldsValue['email'], password: fieldsValue['password']}
@@ -14,19 +17,20 @@ const Register = () => {
     password: `${collectedValues.password}`
   })
   .then(response => {
-    console.log('Connected');
-    console.log('User profile', response.data.user);
     Cookies.set('token', response.data.jwt, { sameSite: 'lax' });
-    dispatch(logIn(Cookies.get('token'), response.data.user.id));
+    Cookies.set('id', response.data.user.id, { sameSite: 'lax' });
+    Cookies.set('isLoggedIn', true, { sameSite: 'lax' });
+    dispatch(logIn(Cookies.get('token'), Cookies.get('id')));
+    history.push('/');
   })
       .catch(error => {
-    console.log('An error occurred:', error.response.data);
+        alert(error.response.data.message[0].messages[0].message);
   });
   }
   return (
     <>
       <h1>Sign up for My Social Network!</h1>
-      <div style={{width:'50%', margin:'auto auto'}}>
+      <div className="form">
         <Form onFinish={(values) => handleSubmit(values)}>
           <Form.Item name="username" label={<span>Your username</span>}>
             <Input />
@@ -38,7 +42,7 @@ const Register = () => {
             <Input.Password />
           </Form.Item>
           <button type="submit">
-            Sign in
+            Sign up
           </button>
         </Form>
       </div>      
