@@ -50,7 +50,8 @@ const Profile = () => {
             `Bearer ${userToken}`,
         },
       });
-  }; 
+  };
+
   return (
     <>
       {userID ?

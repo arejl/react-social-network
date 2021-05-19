@@ -8,16 +8,16 @@ import React from 'react';
 const EditProfile = () => {
   let history = useHistory();
   const userToken = useSelector(state => state.token);
-  const currentUserID = useSelector(state => state.id);
   const handleSubmit = (fieldsValue) => {
     const collectedValues = { username: fieldsValue['username'], description: fieldsValue['description'] }
     if (!collectedValues.username || !collectedValues.description) {
       alert('Please fill in both fields.');
     }
     else {
-      axios.put(`http://localhost:1337/users/${currentUserID}`,
+      axios.put(`http://localhost:1337/users/me`,
         {
-          description: collectedValues.description
+          description: collectedValues.description,
+          username: collectedValues.username
         },
         {
           headers: {
@@ -26,7 +26,8 @@ const EditProfile = () => {
           }
         })
         .then(response => console.log(response));
-      // history.push('/profile');
+      history.push('/profile');
+      window.location.reload(false);
     };
   };
   const goBack = () => {
