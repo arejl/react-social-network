@@ -6,6 +6,7 @@ import {
   Switch
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Register from './pages/Register';
@@ -32,15 +33,9 @@ function App() {
               <Route path="/login">
                 <Login />
               </Route>
-              <Route path="/profile" exact>
-                <Profile />
-              </Route>
-              <Route path="/profile/edit" exact>
-                <EditProfile />
-              </Route>
-              <Route path="/profile/:userID">
-                <Profile />
-              </Route>
+              <PrivateRoute path="/profile" exact component={Profile} />
+              <PrivateRoute path="/profile/edit" exact component={EditProfile} />
+              <PrivateRoute path="/profile/:userID" component={Profile} />
             </Switch>
           </div>          
         </main>

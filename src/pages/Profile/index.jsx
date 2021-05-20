@@ -57,8 +57,8 @@ const Profile = () => {
       {userID ?
         <>
           <h1>{userInfo.username}'s profile</h1>
-          <div>{userInfo.username}'s description: {userInfo.description}</div>
-          <div>{userInfo.username}'s posts:</div>
+          <div><strong>{userInfo.username}'s description:</strong> {userInfo.description}</div>
+          <div><strong>{userInfo.username}'s posts:</strong></div>
           {userPosts.map(element => <Post key={element.id} id={element.id} text={element.text} username={element.user.username} userID={element.user.id} like={element.like} handleDelete={handleDelete} />)}
          </> 
         :

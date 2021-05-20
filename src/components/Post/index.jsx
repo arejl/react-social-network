@@ -10,7 +10,8 @@ const Post = ({handleDelete, ...props}) => {
   const userToken = useSelector(state => state.token);
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const [likes, setLikes] = React.useState(Number(props.like));
-  const [likeToggle, setLikeToggle] = React.useState(false);
+  const [likeToggle, setLikeToggle] = React.useState(JSON.parse(window.localStorage.getItem(`${props.id}_${currentUser}`)) || false);
+
   const toggleLikes = () => {
     if (!likeToggle) {
       setLikes(likes + 1);
@@ -38,6 +39,7 @@ const Post = ({handleDelete, ...props}) => {
       },
         });
     };
+    window.localStorage.setItem(`${props.id}_${currentUser}`, !likeToggle);
     setLikeToggle(!likeToggle);
   };
 

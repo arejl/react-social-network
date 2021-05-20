@@ -29,7 +29,7 @@ const Login = () => {
   return (
     <>
       <h1>Sign in with your My Social Network account!</h1>
-      <div class="form">
+      <div className="form">
       <Form onFinish={(values) => handleSubmit(values)}>
         <Form.Item name="email" label={<span>Your email</span>}>
           <Input />
